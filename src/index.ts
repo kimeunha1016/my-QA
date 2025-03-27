@@ -1,18 +1,17 @@
 export default {
   async fetch(request: Request): Promise<Response> {
     const url = new URL(request.url);
+
+    // `/slack` 경로 처리
     if (url.pathname === "/slack") {
-      const webhookURL = "https://hooks.slack.com/services/your-webhook-url"; // 슬랙 웹훅 URL 입력
-      const payload = { text: "슬랙 알림 테스트 메시지" };
-
-      await fetch(webhookURL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+      return new Response("Slack 요청이 정상적으로 처리되었습니다!", {
+        status: 200,
+        headers: { "Content-Type": "text/plain" },
       });
-
-      return new Response("Slack 메시지 전송 완료!", { status: 200 });
     }
-    return new Response("Hello from Cloudflare Workers!");
-  }
+
+    // 다른 모든 요청은 404 반환
+    return new Response("Not Found", { status: 404 });
+  },
 };
+
